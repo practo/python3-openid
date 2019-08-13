@@ -8,7 +8,7 @@ from urllib.parse import urlparse, parse_qsl, parse_qs
 from openid.server import server
 from openid import association, cryptutil, oidutil
 from openid.message import Message, OPENID_NS, OPENID2_NS, OPENID1_NS, \
-     IDENTIFIER_SELECT, no_default, OPENID1_URL_LIMIT
+     IDENTIFIER_SELECT, no_default, INCREASED_OPENID_URL_LIMIT
 from openid.store import memstore
 from openid.test.support import CatchLogs
 
@@ -73,7 +73,8 @@ class TestProtocolError(unittest.TestCase):
         self.assertEqual(result_args, expected_args)
 
     def test_browserWithReturnTo_OpenID2_POST(self):
-        return_to = "http://rp.unittest/consumer" + ('x' * OPENID1_URL_LIMIT)
+        return_to = "http://rp.unittest/consumer" + (
+            'x' * INCREASED_OPENID_URL_LIMIT)
         # will be a ProtocolError raised by Decode or CheckIDRequest.answer
         args = Message.fromPostArgs({
             'openid.ns':
@@ -100,7 +101,8 @@ class TestProtocolError(unittest.TestCase):
             args.getArg(OPENID_NS, 'return_to')))
 
     def test_browserWithReturnTo_OpenID1_exceeds_limit(self):
-        return_to = "http://rp.unittest/consumer" + ('x' * OPENID1_URL_LIMIT)
+        return_to = "http://rp.unittest/consumer" + (
+            'x' * INCREASED_OPENID_URL_LIMIT)
         # will be a ProtocolError raised by Decode or CheckIDRequest.answer
         args = Message.fromPostArgs({
             'openid.mode':
@@ -575,11 +577,11 @@ class TestEncode(unittest.TestCase):
             'claimed_id':
             request.identity,
             'return_to':
-            'x' * OPENID1_URL_LIMIT,
+            'x' * INCREASED_OPENID_URL_LIMIT,
         })
 
         self.assertTrue(response.renderAsForm())
-        self.assertTrue(len(response.encodeToURL()) > OPENID1_URL_LIMIT)
+        self.assertTrue(len(response.encodeToURL()) > INCREASED_OPENID_URL_LIMIT)
         self.assertTrue(response.whichEncoding() == server.ENCODE_HTML_FORM)
         webresponse = self.encode(response)
         self.assertTrue(response.toFormMarkup() in webresponse.body)
@@ -603,7 +605,7 @@ class TestEncode(unittest.TestCase):
             'claimed_id':
             request.identity,
             'return_to':
-            'x' * OPENID1_URL_LIMIT,
+            'x' * INCREASED_OPENID_URL_LIMIT,
         })
 
         form_markup = response.toFormMarkup({'foo': 'bar'})
@@ -628,7 +630,7 @@ class TestEncode(unittest.TestCase):
             'claimed_id':
             request.identity,
             'return_to':
-            'x' * OPENID1_URL_LIMIT,
+            'x' * INCREASED_OPENID_URL_LIMIT,
         })
         html = response.toHTML()
         self.assertTrue('<html>' in html)
@@ -658,11 +660,11 @@ class TestEncode(unittest.TestCase):
             'identity':
             request.identity,
             'return_to':
-            'x' * OPENID1_URL_LIMIT,
+            'x' * INCREASED_OPENID_URL_LIMIT,
         })
 
         self.assertFalse(response.renderAsForm())
-        self.assertTrue(len(response.encodeToURL()) > OPENID1_URL_LIMIT)
+        self.assertTrue(len(response.encodeToURL()) > INCREASED_OPENID_URL_LIMIT)
         self.assertTrue(response.whichEncoding() == server.ENCODE_URL)
         webresponse = self.encode(response)
         self.assertEqual(webresponse.headers['location'],
