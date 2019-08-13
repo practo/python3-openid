@@ -49,6 +49,7 @@ matrix:
       env: TOX_ENV=pypy3
 
 install:
+  - pip install --compile --no-cache-dir --global-option="--with-gnutls" pycurl
   - pip install tox
 
 script:
