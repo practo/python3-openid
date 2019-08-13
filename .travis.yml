@@ -49,7 +49,7 @@ matrix:
       env: TOX_ENV=pypy3
 
 install:
-  - pip install --compile --no-cache-dir --global-option="--with-gnutls" pycurl
+  - sudo apt-get install libgnutls28-dev
   - pip install tox
 
 script:
