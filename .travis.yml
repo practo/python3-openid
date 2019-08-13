@@ -50,7 +50,7 @@ matrix:
 
 install:
   - sudo apt-get install libgnutls28-dev
-  - pip install tox
+  - pip install tox==3.13.2
 
 script:
   - tox -e $TOX_ENV
