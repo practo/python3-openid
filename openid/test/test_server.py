@@ -74,7 +74,7 @@ class TestProtocolError(unittest.TestCase):
 
     def test_browserWithReturnTo_OpenID2_POST(self):
         return_to = "http://rp.unittest/consumer" + (
-            'x' * INCREASED_OPENID_URL_LIMIT)
+            'xx' * INCREASED_OPENID_URL_LIMIT)
         # will be a ProtocolError raised by Decode or CheckIDRequest.answer
         args = Message.fromPostArgs({
             'openid.ns':
@@ -577,11 +577,12 @@ class TestEncode(unittest.TestCase):
             'claimed_id':
             request.identity,
             'return_to':
-            'x' * INCREASED_OPENID_URL_LIMIT,
+            'xx' * INCREASED_OPENID_URL_LIMIT,
         })
 
         self.assertTrue(response.renderAsForm())
-        self.assertTrue(len(response.encodeToURL()) > INCREASED_OPENID_URL_LIMIT)
+        self.assertTrue(
+            len(response.encodeToURL()) > INCREASED_OPENID_URL_LIMIT)
         self.assertTrue(response.whichEncoding() == server.ENCODE_HTML_FORM)
         webresponse = self.encode(response)
         self.assertTrue(response.toFormMarkup() in webresponse.body)
